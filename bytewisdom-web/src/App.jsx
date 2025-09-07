@@ -17,7 +17,7 @@ export default function App() {
   async function fetchRandom() {
     try {
       setLoading(true); setError(null)
-      const res = await fetch('https://zenquotes.io/api/random')
+      const res = await fetch('/api/quote');
       const data = await res.json()
       setQ({ text: data[0]?.q, author: data[0]?.a })
     } catch (e) {
