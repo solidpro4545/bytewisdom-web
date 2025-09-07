@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 function QuoteCard({ quote, author }) {
   return (
     <div style={{padding:24, border:'1px solid #eee', borderRadius:12}}>
-      <p style={{fontSize:22, lineHeight:1.4}}>{quote}</p>
+      <p style={{fontSize:22, lineHeight:1.4}}>{quote || '— — —'}</p>
       <p style={{opacity:.7, marginTop:10}}>— {author || 'Unknown'}</p>
     </div>
   )
@@ -13,19 +13,42 @@ export default function App() {
   const [q, setQ] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [cooldown, setCooldown] = useState(0) // seconds
+
+  // tick the cooldown each second
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const t = setInterval(() => setCooldown(c => (c > 0 ? c - 1 : 0)), 1000)
+    return () => clearInterval(t)
+  }, [cooldown])
 
   async function fetchRandom() {
     try {
       setLoading(true); setError(null)
-      const res = await fetch('/api/quote');
+      const res = await fetch(`/api/quote?ts=${Date.now()}`) // cache-buster
       const data = await res.json()
-      setQ({ text: data[0]?.q, author: data[0]?.a })
+      const item = data?.[0]
+
+      // if rate-limited (null/empty), start cooldown and keep current quote
+      if (!item?.q) {
+        setCooldown(30)
+        setError('Rate limit reached. Try again shortly.')
+        return
+      }
+
+      setQ({ text: item.q, author: item.a })
     } catch (e) {
       setError('Could not load quote.')
-    } finally { setLoading(false) }
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => { fetchRandom() }, [])
+
+  const displayAuthor =
+    q?.author ||
+    (cooldown > 0 ? `Try again in ${cooldown}s (limit resets ~30s)` : undefined)
 
   return (
     <main style={{maxWidth:720, margin:'60px auto', padding:'0 20px'}}>
@@ -35,10 +58,16 @@ export default function App() {
       <div style={{margin:'24px 0'}}>
         {loading && <p>Loading…</p>}
         {error && <p>{error}</p>}
-        {q && <QuoteCard quote={q.text} author={q.author} />}
+        {q && <QuoteCard quote={q.text} author={displayAuthor} />}
       </div>
 
-      <button onClick={fetchRandom}>New quote</button>
+      <button onClick={fetchRandom} disabled={loading || cooldown > 0}>
+        {cooldown > 0 ? `Wait ${cooldown}s` : 'New quote'}
+      </button>
+
+      <footer style={{marginTop:16, opacity:.6, fontSize:12}}>
+        Quotes from <a href="https://zenquotes.io/" target="_blank" rel="noreferrer">ZenQuotes.io</a>
+      </footer>
     </main>
   )
 }
