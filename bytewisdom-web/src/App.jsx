@@ -65,8 +65,21 @@ export default function App() {
       </button>
 
       <footer style={{ marginTop: 32, opacity: .6, fontSize: 12 }}>
-        Quotes from <a href="https://zenquotes.io/" target="_blank" rel="noreferrer">ZenQuotes.io</a>
-      </footer>
+  Quotes from{' '}
+  <a href="https://zenquotes.io/" target="_blank" rel="noreferrer">
+    ZenQuotes.io
+  </a>
+  <br />
+  Follow us on{' '}
+  <a
+    href="https://www.instagram.com/bytewisdom_motivation/"
+    target="_blank"
+    rel="noreferrer"
+    style={{ fontWeight: 'bold' }}
+  >
+    Instagram
+  </a>
+</footer>
     </main>
   )
 }
