@@ -65,32 +65,52 @@ export default function App() {
       </button>
 
       <footer style={{ marginTop: 32, opacity: .6, fontSize: 12 }}>
-        Quotes from{' '}
-        <a href="https://zenquotes.io/" target="_blank" rel="noreferrer">
-          ZenQuotes.io
-        </a>
-        <br />
-        Follow us on{' '}
-        <a
-          href="https://www.instagram.com/bytewisdom_motivation/"
-          target="_blank"
-          rel="noreferrer"
-          style={{ fontWeight: 'bold', display: 'inline-flex', alignItems: 'center' }}
-        >
-          {/* Instagram SVG icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            style={{ marginRight: 6 }}
-          >
-            <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm9.25 1.25a1.25 1.25 0 1 1 0 2.5a1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6a3 3 0 0 0 0-6z"/>
-          </svg>
-          Instagram
-        </a>
-      </footer>
+  Quotes from{' '}
+  <a href="https://zenquotes.io/" target="_blank" rel="noreferrer">
+    ZenQuotes.io
+  </a>
+  <br />
+  Follow us on{' '}
+  <a
+    href="https://www.instagram.com/bytewisdom_motivation/"
+    target="_blank"
+    rel="noreferrer"
+    style={{ fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', marginRight: 12 }}
+  >
+    {/* Instagram SVG icon */}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      style={{ marginRight: 6 }}
+    >
+      <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm9.25 1.25a1.25 1.25 0 1 1 0 2.5a1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6a3 3 0 0 0 0-6z"/>
+    </svg>
+    Instagram
+  </a>
+  <a
+    href="https://github.com/solidpro4545"
+    target="_blank"
+    rel="noreferrer"
+    style={{ fontWeight: 'bold', display: 'inline-flex', alignItems: 'center' }}
+  >
+    {/* GitHub SVG icon */}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      style={{ marginRight: 6 }}
+    >
+      <path d="M12 .5C5.648.5.5 5.648.5 12a11.5 11.5 0 0 0 7.857 10.93c.574.106.785-.249.785-.555v-2.018c-3.194.695-3.87-1.54-3.87-1.54-.523-1.328-1.278-1.68-1.278-1.68-1.044-.714.079-.699.079-.699 1.155.082 1.762 1.187 1.762 1.187 1.027 1.76 2.693 1.251 3.35.956.104-.744.402-1.251.732-1.539-2.55-.291-5.231-1.275-5.231-5.674 0-1.253.449-2.278 1.186-3.08-.119-.29-.513-1.462.113-3.048 0 0 .967-.31 3.17 1.177a10.98 10.98 0 0 1 2.884-.388c.978.004 1.963.132 2.884.388 2.202-1.487 3.168-1.177 3.168-1.177.628 1.586.233 2.758.115 3.048.739.802 1.186 1.827 1.186 3.08 0 4.41-2.685 5.38-5.244 5.666.413.356.781 1.063.781 2.143v3.176c0 .308.208.665.791.553A11.5 11.5 0 0 0 23.5 12c0-6.352-5.148-11.5-11.5-11.5z"/>
+    </svg>
+    GitHub
+  </a>
+</footer>
+
     </main>
   )
 }
