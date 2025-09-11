@@ -65,21 +65,32 @@ export default function App() {
       </button>
 
       <footer style={{ marginTop: 32, opacity: .6, fontSize: 12 }}>
-  Quotes from{' '}
-  <a href="https://zenquotes.io/" target="_blank" rel="noreferrer">
-    ZenQuotes.io
-  </a>
-  <br />
-  Follow us on{' '}
-  <a
-    href="https://www.instagram.com/bytewisdom_motivation/"
-    target="_blank"
-    rel="noreferrer"
-    style={{ fontWeight: 'bold' }}
-  >
-    Instagram
-  </a>
-</footer>
+        Quotes from{' '}
+        <a href="https://zenquotes.io/" target="_blank" rel="noreferrer">
+          ZenQuotes.io
+        </a>
+        <br />
+        Follow us on{' '}
+        <a
+          href="https://www.instagram.com/bytewisdom_motivation/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ fontWeight: 'bold', display: 'inline-flex', alignItems: 'center' }}
+        >
+          {/* Instagram SVG icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            style={{ marginRight: 6 }}
+          >
+            <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm9.25 1.25a1.25 1.25 0 1 1 0 2.5a1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6a3 3 0 0 0 0-6z"/>
+          </svg>
+          Instagram
+        </a>
+      </footer>
     </main>
   )
 }
