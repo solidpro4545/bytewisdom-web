@@ -39,6 +39,7 @@ export default function About() {
           It’s intentionally lightweight — fast to load, easy to use, and free forever.
           The hope is that these little “bytes” of wisdom can spark big changes over time.
         </p>
+        
       </main>
     </div>
   )

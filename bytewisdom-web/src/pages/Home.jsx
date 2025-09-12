@@ -79,7 +79,6 @@ export default function Home() {
             {cooldown > 0 ? `Wait ${cooldown}s` : 'New quote'}
           </button>
         </div>
-        <Footer />
       </main>
     </div>
   )

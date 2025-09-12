@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
 
@@ -8,19 +9,21 @@ export default function App() {
     <div
       style={{
         minHeight: '100vh',
-        width: '100%',           // <-- changed from 100vw
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
-        overflowX: 'hidden'      // <-- prevents accidental horizontal scroll
       }}
     >
       <Header />
-      <div style={{ flex: 1 }}>
+      {/* Main content */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
+      {/* Footer always at the bottom */}
+      <Footer />
     </div>
   )
 }
