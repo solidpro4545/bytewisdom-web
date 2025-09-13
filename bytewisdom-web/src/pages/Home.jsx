@@ -9,70 +9,96 @@ function secondsLeft(until) {
   return ms > 0 ? Math.ceil(ms / 1000) : 0;
 }
 
-export default function Home() {
-  const [q, setQ] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [cooldown, setCooldown] = useState(0)
+function getSavedUntil() {
+  return Number(localStorage.getItem(KEY) || 0);
+}
 
-  // Initialize cooldown from localStorage on mount
+export default function Home() {
+  const [q, setQ] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [cooldown, setCooldown] = useState(0);
+
+  // Initialize from storage and only auto-fetch if not cooling down
   useEffect(() => {
-    const saved = Number(localStorage.getItem(KEY) || 0);
-    setCooldown(secondsLeft(saved));
+    const saved = getSavedUntil();
+    const left = secondsLeft(saved);
+    setCooldown(left);
+    if (left === 0) fetchRandom(); // don't auto-hit API if we're still cooling down
   }, []);
 
-  // Tick every second while cooling down
+  // Tick every second while cooling down, based on saved timestamp
   useEffect(() => {
     if (cooldown <= 0) return;
     const t = setInterval(() => {
-      const saved = Number(localStorage.getItem(KEY) || 0);
-      setCooldown(secondsLeft(saved));
+      setCooldown(secondsLeft(getSavedUntil()));
     }, 1000);
     return () => clearInterval(t);
   }, [cooldown]);
 
-  // Keep in sync when user switches tabs or navigates quickly
+  // Resync when tab visibility changes
   useEffect(() => {
-    const onVis = () => {
-      const saved = Number(localStorage.getItem(KEY) || 0);
-      setCooldown(secondsLeft(saved));
-    };
+    const onVis = () => setCooldown(secondsLeft(getSavedUntil()));
     document.addEventListener('visibilitychange', onVis);
     return () => document.removeEventListener('visibilitychange', onVis);
   }, []);
 
   async function fetchRandom() {
-    // guard: if still cooling down, don't call server
+    // Guard: if still cooling down, don't call server
     if (cooldown > 0) return;
 
     try {
-      setLoading(true)
-      setError(null)
-      const res = await fetch(`/api/quote?ts=${Date.now()}`)
-      const data = await res.json()
+      setLoading(true);
+      setError(null);
 
-      // Prefer explicit 429 handling from your API, but this keeps your current shape
-      const item = data?.[0]
-      if (!item?.q) {
-        const until = Date.now() + 30_000; // 30s window
+      const res = await fetch(`/api/quote?ts=${Date.now()}`);
+
+      // Prefer explicit 429 handling if your API supports it
+      if (!res.ok && res.status === 429) {
+        let retryAfter;
+        try {
+          const body = await res.json();
+          retryAfter = body?.retryAfter; // seconds
+        } catch {
+          // ignore parse errors; fallback to 30s
+        }
+        const suggested = Date.now() + (retryAfter ?? 30) * 1000;
+        const until = Math.max(getSavedUntil(), suggested); // don't shorten/extend incorrectly
         localStorage.setItem(KEY, String(until));
         setCooldown(secondsLeft(until));
-        setError('Rate limit reached. Try again shortly.')
-        return
+        setError('Rate limit reached. Try again shortly.');
+        return;
       }
 
-      setQ({ text: item.q, author: item.a })
+      const data = await res.json();
+      const item = data?.[0];
+
+      // Back-compat with your current shape when rate-limited (no q present)
+      if (!item?.q) {
+        const suggested = Date.now() + 30_000; // 30s window
+        const until = Math.max(getSavedUntil(), suggested);
+        localStorage.setItem(KEY, String(until));
+        setCooldown(secondsLeft(until));
+        setError('Rate limit reached. Try again shortly.');
+        return;
+      }
+
+      // Success
+      setQ({ text: item.q, author: item.a });
+      // Optional: clear any stale cooldown
+      if (getSavedUntil() && secondsLeft(getSavedUntil()) > 0) {
+        localStorage.setItem(KEY, '0');
+        setCooldown(0);
+      }
     } catch (e) {
-      setError('Could not load quote.')
+      setError('Could not load quote.');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
-  useEffect(() => { fetchRandom() }, [])
-
   const displayAuthor =
-    q?.author || (cooldown > 0 ? `Try again in ${cooldown}s` : 'Unknown')
+    q?.author || (cooldown > 0 ? `Try again in ${cooldown}s` : 'Unknown');
 
   return (
     <div style={{
